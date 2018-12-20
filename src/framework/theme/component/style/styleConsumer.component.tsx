@@ -47,7 +47,7 @@ export const StyledComponent = <T extends React.Component, P extends object>(Com
     createComponentStyle = (theme: ThemeType,
                    mapping: ThemeMappingType,
                    variant: string[] | string,
-                   state: string[] | string): StyleType => { //todo: refactor
+                   state: string[] | string): StyleType => { // todo: refactor
 
       if (state.length === 0) {
         console.warn('Redundant `requestStateStyle` call! Use `this.props.themedStyle` instead!');
@@ -89,13 +89,13 @@ export const StyledComponent = <T extends React.Component, P extends object>(Com
     createCustomProps = (props: ConsumerProps, componentProps: P & Props): Props => {
       const mapping = getThemeMapping(this.getComponentName(), props.mapping);
       const variants: string[] = this.getCurrentComponentMappingsVariants(mapping, componentProps);
-      console.log(variants);
 
       return { // todo: pass right params to createStyle
         appearance: componentProps.appearance,
         theme: props.theme,
-        themedStyle: {}, //createStyle(props.theme, mapping, componentProps.appearance),
-        requestStateStyle: state => {}//this.createComponentStyle(props.theme, mapping, componentProps.variant, state),
+        themedStyle: {}, // createStyle(props.theme, mapping, componentProps.appearance),
+        // this.createComponentStyle(props.theme, mapping, componentProps.variant, state),
+        requestStateStyle: state => {},
       };
     };
 
