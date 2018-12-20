@@ -18,7 +18,9 @@ interface RadioProps {
   onChange?: (selected: boolean) => void;
   checked?: boolean;
   disabled?: boolean;
-  variant?: string | 'default' | 'error';
+  appearance?: string | 'default' | 'bold';
+  status?: string | 'info' | 'success';
+  size?: string | 'big' | 'small';
 }
 
 export type Props = RadioProps & StyledComponentProps & ViewProps;

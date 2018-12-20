@@ -4,7 +4,11 @@ import {
   ThemeType,
   StyleType,
 } from '../theme';
-import { ThemeMappingType } from '../mapping';
+import {
+  ThemeMappingType,
+  AppearanceType,
+  VariantGroupType,
+} from '../mapping';
 import ThemeContext from '../theme/themeContext';
 import MappingContext from '../mapping/mappingContext';
 import {
@@ -22,11 +26,14 @@ interface ConsumerProps {
 }
 
 export interface Props {
-  variant?: string;
+  appearance?: string;
   theme?: ThemeType;
   themedStyle?: StyleType;
   requestStateStyle?: (state: string[] | string) => StyleType;
 }
+
+const DEFAULT_APPEARANCE_KEY_NAME: string = 'default';
+const VARIANT_KEY_NAME: string = 'variant';
 
 export const StyledComponent = <T extends React.Component, P extends object>(Component: React.ComponentClass<P>) => {
 
@@ -37,10 +44,10 @@ export const StyledComponent = <T extends React.Component, P extends object>(Com
 
     getComponentName = (): string => Component.displayName || Component.name;
 
-    createStyle = (theme: ThemeType,
+    createComponentStyle = (theme: ThemeType,
                    mapping: ThemeMappingType,
                    variant: string[] | string,
-                   state: string[] | string): StyleType => {
+                   state: string[] | string): StyleType => { //todo: refactor
 
       if (state.length === 0) {
         console.warn('Redundant `requestStateStyle` call! Use `this.props.themedStyle` instead!');
@@ -48,13 +55,47 @@ export const StyledComponent = <T extends React.Component, P extends object>(Com
       return createStyle(theme, mapping, variant, state);
     };
 
-    createCustomProps = (props: ConsumerProps, variant: string): Props => {
+    hasComponentAppearance = (appearanceProp: string): boolean => appearanceProp && appearanceProp.length !== 0;
+
+    hasVariantPropKey = (variant: VariantGroupType, propKey: string): boolean =>
+      Object.keys(variant).some((variantKey: string) => variantKey === propKey);
+
+    hasAppearanceVariant = (appearance: AppearanceType): boolean => appearance.hasOwnProperty(VARIANT_KEY_NAME);
+
+    hasAppearanceMappingPropKey = (appearance: AppearanceType, key: string): boolean => {
+      return this.hasAppearanceVariant(appearance) && this.hasVariantPropKey(appearance[VARIANT_KEY_NAME], key);
+    };
+
+    getCurrentComponentMappingsVariants = (mapping: ThemeMappingType, componentProps: P & Props): string[] => {
+      const defaultAppearance: AppearanceType = mapping.appearance[DEFAULT_APPEARANCE_KEY_NAME];
+      const currentAppearance: AppearanceType = this.hasComponentAppearance(componentProps.appearance) ?
+        mapping.appearance[componentProps.appearance] : mapping.appearance[DEFAULT_APPEARANCE_KEY_NAME];
+      const matchedVariantsPropsKeys: string[] = Object.keys(componentProps)
+        .map((key: string) => {
+          if (this.hasAppearanceMappingPropKey(currentAppearance, key)) {
+            return key;
+          } else if (this.hasAppearanceMappingPropKey(defaultAppearance, key)) {
+            return key;
+          }
+        })
+        .filter(String);
+
+      return Object.keys(componentProps)
+        .filter((propsKey: string) => matchedVariantsPropsKeys.some((foundKey: string) => foundKey === propsKey))
+        .map((key: string) => componentProps[key])
+        .filter(String);
+    };
+
+    createCustomProps = (props: ConsumerProps, componentProps: P & Props): Props => {
       const mapping = getThemeMapping(this.getComponentName(), props.mapping);
-      return {
-        variant: variant,
+      const variants: string[] = this.getCurrentComponentMappingsVariants(mapping, componentProps);
+      console.log(variants);
+
+      return { // todo: pass right params to createStyle
+        appearance: componentProps.appearance,
         theme: props.theme,
-        themedStyle: createStyle(props.theme, mapping, variant),
-        requestStateStyle: state => this.createStyle(props.theme, mapping, variant, state),
+        themedStyle: {}, //createStyle(props.theme, mapping, componentProps.appearance),
+        requestStateStyle: state => {}//this.createComponentStyle(props.theme, mapping, componentProps.variant, state),
       };
     };
 
@@ -65,7 +106,7 @@ export const StyledComponent = <T extends React.Component, P extends object>(Com
       return (
         <Component
           ref={forwardedRef}
-          {...this.createCustomProps(props, componentProps.variant)}
+          {...this.createCustomProps(props, componentProps)}
           {...componentProps}
         />
       );

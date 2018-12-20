@@ -47,57 +47,81 @@
     }
   },
   "Radio": {
-    "parameters": [
-      "size",
-      "borderWidth",
-      "tintColor",
-      "borderColor"
-    ],
-    "states": [
-      "active",
-      "checked",
-      "disabled"
-    ],
-    "variants": {
+    "appearance": {
       "default": {
-        "size": 36,
-        "innerSize": 24,
-        "highlightSize": 54,
-        "borderWidth": 2,
-        "borderColor": "gray-primary",
-        "selectColor": "transparent",
-        "state": {
-          "checked": {
-            "borderColor": "blue-primary",
-            "selectColor": "blue-primary"
+        "mapping": {
+          "size": 36,
+          "innerSize": 24,
+          "borderWidth": 2,
+          "borderColor": "gray-primary",
+          "selectColor": "transparent",
+          "state": {
+            "active": {
+              "borderColor": "gray-dark"
+            },
+            "checked": {
+              "borderColor": "blue-primary",
+              "selectColor": "blue-primary"
+            },
+            "disabled": {
+              "borderColor": "gray-light"
+            },
+            "active.checked": {
+              "borderColor": "blue-dark"
+            },
+            "checked.disabled": {
+              "selectColor": "gray-primary"
+            }
+          }
+        },
+        "variant": {
+          "status": {
+            "info": {
+              "mapping": {
+                "state": {
+                  "checked": {
+                    "borderColor": "orange-primary",
+                    "selectColor": "orange-primary"
+                  },
+                  "active.checked": {
+                    "borderColor": "orange-dark"
+                  }
+                }
+              }
+            },
+            "success": {
+              "mapping": {
+                "state": {
+                  "checked": {
+                    "borderColor": "teal-primary",
+                    "selectColor": "teal-primary"
+                  },
+                  "active.checked": {
+                    "borderColor": "teal-dark"
+                  }
+                }
+              }
+            }
           },
-          "active-unchecked": {
-            "borderColor": "gray-dark",
-            "highlightColor": "gray-highlight"
-          },
-          "active-checked": {
-            "borderColor": "blue-dark",
-            "highlightColor": "gray-highlight"
-          },
-          "disabled": {
-            "borderColor": "gray-light",
-            "selectColor": "gray-primary"
+          "size": {
+            "big": {
+              "mapping": {
+                "size": 42,
+                "innerSize": 28
+              }
+            },
+            "small": {
+              "mapping": {
+                "size": 30,
+                "innerSize": 20
+              }
+            }
           }
         }
       },
-      "error": {
-        "borderColor": "pink-primary",
-        "state": {
-          "checked": {
-            "borderColor": "pink-primary",
-            "selectColor": "pink-primary"
-          },
-          "active-unchecked": {
-            "borderColor": "pink-primary"
-          },
-          "active-checked": {
-            "borderColor": "pink-primary"
-          }
+      "bold": {
+        "mapping": {
+          "borderWidth": 4
         }
       }
     }

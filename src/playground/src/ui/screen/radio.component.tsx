@@ -59,54 +59,11 @@ class Radio extends React.Component<Props, State> {
           <View style={this.props.themedStyle.containerPreview}>
             <RadioComponent
               style={this.props.themedStyle.component}
-              variant='default'
+              appearance='bold'
+              status='info'
+              size='small'
               checked={this.state.isRadio1Checked}
               onChange={this.onRadio1Change}
-            />
-            <RadioComponent
-              style={this.props.themedStyle.component}
-              variant='default'
-              checked={this.state.isRadio2Checked}
-              onChange={this.onRadio2Change}
-              />
-            <RadioComponent
-              style={this.props.themedStyle.component}
-              variant='default'
-              checked={this.state.isRadio3Checked}
-              disabled={true}
-              onChange={this.onRadio3Change}
-            />
-            <RadioComponent
-              style={this.props.themedStyle.component}
-              variant='default'
-              checked={this.state.isRadio4Checked}
-              disabled={true}
-              onChange={this.onRadio4Change}
-            />
-          </View>
-        </View>
-        <View style={this.props.themedStyle.containerSection}>
-          <Text style={this.props.themedStyle.textDescription}>Error</Text>
-          <View style={this.props.themedStyle.containerPreview}>
-            <RadioComponent
-              style={this.props.themedStyle.component}
-              variant='error'
-            />
-            <RadioComponent
-              style={this.props.themedStyle.component}
-              variant='error'
-              checked={true}
-            />
-            <RadioComponent
-              style={this.props.themedStyle.component}
-              variant='error'
-              disabled={true}
-            />
-            <RadioComponent
-              style={this.props.themedStyle.component}
-              variant='error'
-              checked={true}
-              disabled={true}
             />
           </View>
         </View>
